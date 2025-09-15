@@ -1,88 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MRI Tumor Detection System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f6f9;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MRI Tumor Detection System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e9f2ff, #f4f6f9);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-        .container {
-            max-width: 650px;
-            margin: 0 auto;
-        }
+    .container {
+      max-width: 700px;
+    }
 
-        .card {
-            border-radius: 15px;
-        }
+    .header-title {
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
 
-        #results img {
-            max-height: 450px;
-            margin-top: 15px;
-        }
+    .card {
+      border-radius: 20px;
+      border: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease-in-out;
+    }
 
-        .text-center {
-            text-align: center;
-        }
+    .card:hover {
+      transform: translateY(-3px);
+    }
 
-        .btn {
-            width: 100%;
-        }
+    #results img {
+      max-height: 450px;
+      border-radius: 15px;
+      border: 2px solid #e6e6e6;
+      margin-top: 15px;
+    }
 
-        .lead {
-            margin-bottom: 25px;
-        }
+    .btn-primary {
+      border-radius: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 12px;
+      background: linear-gradient(90deg, #007bff, #0056d2);
+      border: none;
+      transition: background 0.3s ease-in-out;
+    }
 
-        .spinner-border {
-            display: none;
-        }
-    </style>
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #0056d2, #003c99);
+    }
+
+    .spinner-border {
+      display: none;
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .confidence {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #6c757d;
+    }
+
+    .result-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #28a745;
+    }
+  </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <div class="text-center mb-4">
-            <h1 class="display-4 text-primary">MRI Tumor Detection</h1>
-            <p class="lead text-secondary">Upload an MRI scan to detect the presence and type of tumor.</p>
-        </div>
-
-        <!-- File Upload Form -->
-        <div class="card shadow p-4 mb-4">
-            <form method="POST" enctype="multipart/form-data" onsubmit="showSpinner()">
-                <div class="mb-3">
-                    <label for="file" class="form-label">Select MRI Image</label>
-                    <input type="file" class="form-control" id="file" name="file" accept="image/*" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Upload & Detect</button>
-                <div class="text-center mt-3">
-                    <div class="spinner-border text-primary" role="status" id="loadingSpinner">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <!-- Display Results -->
-        {% if result %}
-        <div id="results" class="mt-4">
-            <div class="card shadow p-3">
-                <div class="card-body text-center">
-                    <h4 class="card-title text-success">{{ result }}</h4>
-                    <p class="card-text text-muted">Confidence: {{ confidence }}%</p>
-                    <img src="{{ file_path }}" class="img-fluid rounded mt-2" alt="Uploaded Image">
-                </div>
-            </div>
-        </div>
-        {% endif %}
+  <div class="container">
+    <div class="text-center mb-5">
+      <h1 class="display-5 text-primary header-title">🧠 MRI Tumor Detection</h1>
+      <p class="lead text-muted">Upload an MRI scan to analyze and detect tumor presence and type.</p>
     </div>
 
-    <script>
-        function showSpinner() {
-            document.getElementById('loadingSpinner').style.display = 'inline-block';
-        }
-    </script>
+    <!-- File Upload Form -->
+    <div class="card shadow-lg p-4 mb-4">
+      <form method="POST" enctype="multipart/form-data" onsubmit="showSpinner()">
+        <div class="mb-3">
+          <label for="file" class="form-label fw-semibold">Select MRI Image</label>
+          <input type="file" class="form-control form-control-lg" id="file" name="file" accept="image/*" required>
+        </div>
+        <button type="submit" class="btn btn-primary">🔍 Upload & Detect</button>
+        <div class="text-center mt-3">
+          <div class="spinner-border text-primary" role="status" id="loadingSpinner">
+            <span class="visually-hidden">Analyzing...</span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Display Results -->
+    {% if result %}
+    <div id="results" class="mt-4">
+      <div class="card shadow-lg p-3">
+        <div class="card-body text-center">
+          <h4 class="result-title">{{ result }}</h4>
+          <p class="confidence">Confidence: <strong>{{ confidence }}%</strong></p>
+          <img src="{{ file_path }}" class="img-fluid mt-3" alt="Uploaded MRI Image">
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    function showSpinner() {
+      document.getElementById('loadingSpinner').style.display = 'inline-block';
+    }
+  </script>
 </body>
 </html>
