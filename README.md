@@ -1,6 +1,12 @@
-# MRI Tumor Detection Web Application
+# 🧠 MRI Tumor Detection System
 
-This repository contains a Flask-based web application for detecting and classifying brain tumors from MRI scans using a convolutional neural network (CNN) built on top of the VGG16 pre-trained model. The application allows users to upload MRI images and receive predictions on the presence and type of tumor (pituitary, glioma, meningioma, or no tumor) along with a confidence score.
+A Flask-based web application that detects **brain tumors from MRI scans** using a pre-trained deep learning model (`model.keras`).  
+
+Users can upload an MRI image, and the system will:
+- Preprocess the image  
+- Run inference with a TensorFlow/Keras CNN model  
+- Display the **tumor type (Glioma, Meningioma, Pituitary)** or **No Tumor**  
+- Show the **confidence score** along with the uploaded image
 
 ## Features
 - **Image Upload**: Users can upload MRI images in PNG, JPG, JPEG, or GIF formats.
@@ -22,66 +28,91 @@ The model is built using the VGG16 architecture with the following modifications
 - **Input**: MRI images resized to 128x128 pixels.
 - **Output**: Probability distribution over four classes (pituitary, glioma, meningioma, notumor).
 
+---
 
-## Installation
-1. **Clone the Repository**:
+## 📸 Demo
+
+![App Screenshot](templates/demo.png) <!-- optional: add a screenshot -->
+
+---
+
+## 🚀 Features
+- Upload MRI images (`.jpg`, `.png`, etc.)  
+- Automatic classification into:
+  - **Glioma**
+  - **Meningioma**
+  - **Pituitary tumor**
+  - **No Tumor**  
+- Shows prediction confidence (%)  
+- Clean Bootstrap UI with loading spinner & alerts  
+
+---
+
+## 🗂️ Project Structure
+
+```
+brain-tumor-detection/
+│
+├── app.py                 # Flask backend
+├── models/
+│   └── model.keras        # Trained deep learning model
+├── uploads/               # Stores uploaded MRI scans (auto-created)
+├── templates/
+│   └── index.html         # Frontend (Bootstrap UI)
+├── requirements.txt       # Dependencies
+└── Procfile               # Startup config for Render
+```
+
+---
+
+## ⚙️ Installation (Local Setup)
+
+1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/mri-tumor-detection.git
-   cd mri-tumor-detection
+   git clone https://github.com/chandan9369/Brain-Tumor-Detection-App-Using-Deep-Learning.git
+   cd Brain-Tumor-Detection-App-Using-Deep-Learning
    ```
 
-2. **Set Up a Virtual Environment** (recommended):
+2. **Create a virtual environment (optional but recommended)**
    ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   source venv/bin/activate   # Mac/Linux
+   venv\Scripts\activate      # Windows
    ```
 
-3. **Install Dependencies**:
+3. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
-   Required packages include:
-   - `flask`
-   - `tensorflow`
-   - `numpy`
-   - `pillow` (for image processing)
 
-4. **Download the Pre-trained Model**:
-   - Place the trained model file (`model.h5`) in the `models/` directory. You can train your own model or download a pre-trained one (not included in this repository due to size).
-
-5. **Create Uploads Directory**:
-   ```bash
-   mkdir uploads
-   ```
-
-## Usage
-1. **Run the Flask Application**:
+4. **Run the Flask app**
    ```bash
    python app.py
    ```
-   The application will start in debug mode and be accessible at `http://127.0.0.1:5000`.
 
-2. **Access the Web Interface**:
-   - Open a web browser and navigate to `http://127.0.0.1:5000`.
-   - Upload an MRI image using the provided interface.
-   - View the prediction result and confidence score.
+5. Open your browser at:
+   ```
+   http://127.0.0.1:5000
+   ```
 
-## File Structure
-```
-mri-tumor-detection/
-│
-├── app.py                  # Flask application script
-├── index.html              # HTML template for the web interface
-├── models/                 # Directory for the pre-trained model (model.h5)
-├── uploads/                # Directory for uploaded MRI images
-├── model_architecture.md   # Detailed model architecture documentation
-├── requirements.txt        # Python dependencies
-└── README.md               # This file
-```
+---
 
-## Dependencies
-- Python 3.8+
-- Flask
-- TensorFlow
-- NumPy
-- Pillow
+## 🛠️ Tech Stack
+- **Frontend:** HTML, Bootstrap 5  
+- **Backend:** Flask (Python)  
+- **Model:** TensorFlow/Keras CNN  
+
+---
+
+## 📊 Model Info
+- Input size: **128x128 RGB**  
+- Output classes: `['pituitary', 'glioma', 'notumor', 'meningioma']`  
+- Saved format: `.keras`  
+
+---
+
+## ✨ Future Improvements
+- Add MRI preview before uploading  
+- Deploy with GPU support  
+- Optimize model (reduce size, faster inference)  
+
